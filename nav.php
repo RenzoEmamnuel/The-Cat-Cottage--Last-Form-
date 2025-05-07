@@ -5,12 +5,13 @@
 <nav class="sticky top-3 mx-auto w-1/2 bg-[#F5ECD5] px-4 py-2 rounded-3xl z-50 shadow-lg">
   <div class="flex items-center justify-between">
     <!-- Desktop Links -->
-    <div class="hidden md:flex justify-center gap-x-4 text-sm font-semibold text-gray-800 w-full">
-      <a href="home.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">Home</a>
-      <a href="adopt.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">Adopt</a>
-      <a href="aboutus.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">About Us</a>
-      <a href="login.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">Log In / Sign Up</a>
-    </div>
+      <div class="hidden md:flex justify-center gap-x-4 text-sm font-semibold text-gray-800 w-full">
+        <a href="home.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">Home</a>
+        <a href="adopt.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">Adopt</a>
+        <a href="aboutus.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">About Us</a>
+        <a href="login.php" class="bg-[#A4B465] text-white hover:bg-[#8FA856] px-4 py-2 rounded-full transition">Log In / Sign Up</a>
+      </div>
+
 
     <!-- Hamburger Menu Button (shown on small screens only) -->
     <button id="menu-toggle" class="md:hidden text-gray-800 focus:outline-none ml-auto">
