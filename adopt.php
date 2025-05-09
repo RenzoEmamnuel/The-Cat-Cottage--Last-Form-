@@ -1,160 +1,78 @@
-<?php include("nav.php"); ?>
 <?php include("connections.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Cat Adoption</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: url('path/to/your/background.jpg') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-            font-family: 'Nunito', sans-serif;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cat Adoption</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif']
+          },
+          colors: {
+            darkgreen: '#626F47',
+            olivegreen: '#A4B465',
+            cream: '#f1f0d1',
+            adoptbtn: '#a6c191',
+            adoptbtnhover: '#8eaa7a',
+          }
         }
-
-        .centered-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 40px 0;
-        }
-
-        .blur-card {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 2rem;
-            width: 80%;            /* wider to fit 4-per-row */
-            margin: 0 auto;
-        }
-
-        .grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .card {
-            background-color: #f1f0d1;
-            width: calc(25% - 20px);
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        .card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .info {
-            font-size: 14px;
-            margin: 10px 0;
-            text-align: left;
-        }
-
-        .btn {
-            background-color: #a6c191;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            background-color: #8eaa7a;
-        }
-
-        @media (max-width: 1200px) {
-            .card { width: calc(33.33% - 20px); }
-        }
-        @media (max-width: 768px) {
-            .card { width: calc(50% - 20px); }
-        }
-        @media (max-width: 480px) {
-            .card { width: 100%; }
-            .blur-card { width: 95%; }
-			
-			
-        }
-    </style>
+      }
+    }
+  </script>
 </head>
-<script>
-function checkAdoptionRequest(catId) {
-    fetch('check_request.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'cat_id=' + catId
-    })
-    .then(response => response.text())
-    .then(result => {
-        if (result.trim() === 'exists') {
-            alert("You have already requested to adopt this cat.");
-        } else {
-            window.location.href = 'adoption_form.php?cat_id=' + catId;
-        }
-    });
-}
-</script>
 
+<body class="font-poppins bg-darkgreen min-h-screen">
+  <?php include("nav.php"); ?>
 
-<body>
+  <main class="pt-32 pb-16 px-6 md:px-10 lg:px-20">
+    <section class="bg-olivegreen p-10 md:p-12 rounded-3xl shadow-2xl">
+      <h2 class="text-3xl font-semibold text-white text-center mb-10">Available Cats for Adoption</h2>
 
-<div class="centered-container">
-    <div class="blur-card shadow-lg">
-        <h2 class="text-center mb-4">Available Cats for Adoption</h2>
-        <div class="grid">
-            <?php
-            $query = mysqli_query($connections, "SELECT * FROM cats WHERE status='Available'");
-            while ($row = mysqli_fetch_assoc($query)) {
-                $image       = htmlspecialchars($row['image']);
-                $name        = htmlspecialchars($row['name']);
-                $breed       = htmlspecialchars($row['breed']);
-                $age         = htmlspecialchars($row['age']);
-                $sex         = htmlspecialchars($row['sex']);
-                $neutered    = htmlspecialchars($row['neutered']);
-                $vaccination = htmlspecialchars($row['vaccination']);
-                $description = htmlspecialchars($row['description']);
-                $id          = intval($row['id']);
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+        <?php
+        $query = mysqli_query($connections, "SELECT * FROM cats WHERE status='Available'");
+        while ($row = mysqli_fetch_assoc($query)) {
+            $image       = htmlspecialchars($row['image']);
+            $name        = htmlspecialchars($row['name']);
+            $breed       = htmlspecialchars($row['breed']);
+            $age         = htmlspecialchars($row['age']);
+            $sex         = htmlspecialchars($row['sex']);
+            $neutered    = htmlspecialchars($row['neutered']);
+            $vaccination = htmlspecialchars($row['vaccination']);
+            $description = htmlspecialchars($row['description']);
+            $id          = intval($row['id']);
 
-                echo "
-                <div class='card'>
-                    <img src='{$image}' alt='Cat Image'>
-                    <div class='info'>
-					<center>
-                        <strong>Name:</strong> {$name}<br>
-                        <strong>Breed:</strong> {$breed}<br>
-                        <strong>Age:</strong> {$age}<br>
-                        <strong>Sex:</strong> {$sex}<br>
-                        <strong>Neutered:</strong> {$neutered}<br>
-                        <strong>Vaccination:</strong> {$vaccination}<br>
-                        <strong>Description:</strong> {$description}
-						</center>
-                    </div>
-                    <button class='btn' onclick='window.location.href=\"login.php?cat_id={$id}\"'>ADOPT</button>
+            echo "
+            <div class='bg-cream rounded-xl overflow-hidden shadow-md flex flex-col'>
+              <img src='{$image}' alt='Cat Image' class='w-full h-52 object-cover'>
+
+              <div class='p-4 text-gray-800 flex-1 flex flex-col justify-between'>
+                <div class='text-sm space-y-1 text-center'>
+                  <p><strong>Name:</strong> {$name}</p>
+                  <p><strong>Breed:</strong> {$breed}</p>
+                  <p><strong>Age:</strong> {$age}</p>
+                  <p><strong>Sex:</strong> {$sex}</p>
+                  <p><strong>Neutered:</strong> {$neutered}</p>
+                  <p><strong>Vaccination:</strong> {$vaccination}</p>
+                  <p><strong>Description:</strong> {$description}</p>
                 </div>
-                ";
-            }
-            ?>
-        </div>
-    </div>
-</div>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+                <div class='mt-4 text-center'>
+                  <button class='bg-adoptbtn hover:bg-adoptbtnhover text-white font-semibold py-2 px-6 rounded-full transition-all duration-300' onclick='window.location.href=\"login.php?cat_id={$id}\"'>ADOPT</button>
+                </div>
+              </div>
+            </div>
+            ";
+        }
+        ?>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
