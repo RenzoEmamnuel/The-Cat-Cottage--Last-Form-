@@ -133,42 +133,105 @@
 
 </section>
 <section class="relative bg-cover bg-center py-16 px-6 text-white" style="background-image: url('images/cat_grasss2.jpg');">
-
   <!-- Happy Image and Subtitle -->
   <div class="absolute top-6 left-6 z-20 max-w-4xl">
-    <img src="images/happy.png" alt="Happy Cats, Happy Hearts" class="w-[380px] sm:w-[480px] max-w-full">
-  </div>
+    <img src="images/happy.png" alt="Happy Cats, Happy Hearts" class="w-full sm:w-[480px] max-w-full">
+    <p class="mx-4 my-2 text-sm sm:text-base md:text-lg lg:text-xl text-black w-auto max-w-full leading-relaxed drop-shadow-[0_0_2px_#F0BB78] break-words">
+    "Bringing home a rescue cat means gaining a best friend. Read inspiring stories from adopters who found happiness through adoption!"
+</p>
 
-  <!-- Story Card -->
-  <div class="bg-[#626f47]/70 backdrop-blur-md rounded-xl px-10 py-8 mt-[50px] w-[90%] max-w-6xl mx-auto flex flex-col md:flex-row items-center md:items-start gap-6 relative">
+</div>
 
-    <!-- Image + Decorative Squares -->
+
+
+ <!-- Story Cards Container -->
+<div class="story-container-wrapper mt-[150px] w-[90%] max-w-6xl mx-auto">
+  <!-- Story Card 1 -->
+  <div class="story-container bg-[#A4B465]/70 backdrop-blur-md rounded-xl px-12 py-10 flex flex-col md:flex-row items-center md:items-start gap-8 relative">
     <div class="relative flex-shrink-0">
-      <!-- Decorative Squares -->
-      <div class="absolute -top-4 -left-4 w-28 h-28 bg-[#f5ecd5] z-0 rounded filter blur-md"></div>
-      <div class="absolute top-4 left-4 w-24 h-24 bg-[#a3b77f] z-0 rounded filter blur-md"></div>
-
-      <!-- Image -->
-      <img src="images/daniel.jpg" alt="Cat Story" class="relative z-10 w-24 h-24 rounded shadow-md">
+      <div class="absolute -top-6 -left-6 w-32 h-32 bg-[#f5ecd5] z-0 rounded filter blur-md"></div>
+      <div class="absolute top-6 left-6 w-28 h-28 bg-[#a3b77f] z-0 rounded filter blur-md"></div>
+      <img src="images/daniel.jpg" alt="Daniel & Oliver" class="relative z-10 w-32 h-32 rounded shadow-md">
     </div>
-
-    <!-- Text -->
-    <div class="text-left text-white flex-1 pt-1">
-      <h3 class="font-bold uppercase text-sm sm:text-base">DANIEL REYES & OLIVER</h3>
-      <p class="text-xs sm:text-sm mt-1 leading-snug">
-        "Oliver was rescued as a stray, and now he owns the house! He greets me at the door, sleeps on my lap, and even ‘helps’ with my work. Giving him a home has been the most rewarding experience."
-      </p>
+    <div class="text-left text-white flex-1 pt-2">
+      <h3 class="font-bold uppercase text-lg sm:text-xl">DANIEL REYES & OLIVER</h3>
+      <p class="text-sm sm:text-base mt-2 leading-snug">
+      "I adopted Oliver through this website, and he’s been a blessing ever since. From the moment he arrived, he made himself right at home—greeting me at the door, sleeping on my lap, and even 'helping' with my work. Giving him a home has been the most rewarding experience."
+</p>
     </div>
-
-    <!-- Arrows (slightly lower) -->
-    <div class="flex gap-3 text-2xl text-white pt-4 md:pt-10">
-      <button class="hover:text-yellow-300">&#10094;</button>
-      <button class="hover:text-yellow-300">&#10095;</button>
+    <div class="flex gap-4 text-3xl text-white pt-6 md:pt-12 absolute bottom-4 right-4">
+      <button class="prevBtn hover:text-yellow-300">&#10094;</button>
+      <button class="nextBtn hover:text-yellow-300">&#10095;</button>
     </div>
-
   </div>
 
-</section>
+  <!-- Story Card 2 -->
+  <div class="story-container hidden bg-[#A4B465]/70 backdrop-blur-md rounded-xl px-12 py-10 flex flex-col md:flex-row items-center md:items-start gap-8 relative">
+    <div class="relative flex-shrink-0">
+      <div class="absolute -top-6 -left-6 w-32 h-32 bg-[#f5ecd5] z-0 rounded filter blur-md"></div>
+      <div class="absolute top-6 left-6 w-28 h-28 bg-[#a3b77f] z-0 rounded filter blur-md"></div>
+      <img src="images/lucas.jpg" alt="Lucas & Snickers" class="relative z-10 w-32 h-32 rounded shadow-md">
+    </div>
+    <div class="text-left text-white flex-1 pt-2">
+      <h3 class="font-bold uppercase text-lg sm:text-xl">LUCAS RAMOS & SNICKERS</h3>
+      <p class="text-sm sm:text-base mt-2 leading-snug">
+      "Snickers came into our lives thanks to this adoption site. He was abandoned at a park, and when we first met, he was shy. But with a little love, he became the most affectionate cat. He truly brings so much joy to our home."      </p>
+    </div>
+    <div class="flex gap-4 text-3xl text-white pt-6 md:pt-12 absolute bottom-4 right-4">
+      <button class="prevBtn hover:text-yellow-300">&#10094;</button>
+      <button class="nextBtn hover:text-yellow-300">&#10095;</button>
+    </div>
+  </div>
+
+  <!-- Story Card 3 -->
+  <div class="story-container hidden bg-[#A4B465]/70 backdrop-blur-md rounded-xl px-12 py-10 flex flex-col md:flex-row items-center md:items-start gap-8 relative">
+    <div class="relative flex-shrink-0">
+      <div class="absolute -top-6 -left-6 w-32 h-32 bg-[#f5ecd5] z-0 rounded filter blur-md"></div>
+      <div class="absolute top-6 left-6 w-28 h-28 bg-[#a3b77f] z-0 rounded filter blur-md"></div>
+      <img src="images/jessica.jpg" alt="Jessica & Luna" class="relative z-10 w-32 h-32 rounded shadow-md">
+    </div>
+    <div class="text-left text-white flex-1 pt-2">
+      <h3 class="font-bold uppercase text-lg sm:text-xl">JESSICA MANALO & LUNA</h3>
+      <p class="text-sm sm:text-base mt-2 leading-snug">
+      "I found Luna through this site, and I couldn’t be more grateful. She was a bit timid at first, but within days, she became my little shadow! Her cuddles and playful energy light up my day—adopting her here was the best decision I’ve made."      </p>
+    </div>
+    <div class="flex gap-4 text-3xl text-white pt-6 md:pt-12 absolute bottom-4 right-4">
+      <button class="prevBtn hover:text-yellow-300">&#10094;</button>
+      <button class="nextBtn hover:text-yellow-300">&#10095;</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const storyContainers = document.querySelectorAll('.story-container');
+    let currentIndex = 0;
+
+    function updateStory() {
+      storyContainers.forEach((container, index) => {
+        container.classList.toggle('hidden', index !== currentIndex);
+      });
+    }
+
+    document.querySelectorAll('.prevBtn').forEach((button, index) => {
+      button.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + storyContainers.length) % storyContainers.length;
+        updateStory();
+      });
+    });
+
+    document.querySelectorAll('.nextBtn').forEach((button, index) => {
+      button.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % storyContainers.length;
+        updateStory();
+      });
+    });
+
+    updateStory();
+  });
+</script>
+
+
 
 
     
