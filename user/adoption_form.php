@@ -4,11 +4,10 @@ include("connections.php");
 $email = $pickup_date = $pickup_time = "";
 $emailErr = $pickup_dateErr = $pickup_timeErr = "";
 
-// Validate cat_id from URL
 if (!isset($_GET['cat_id']) || !is_numeric($_GET['cat_id'])) {
     die("Invalid or missing cat ID.");
 }
-$cat_id = (int) $_GET['cat_id']; // Safe to cast after validation
+$cat_id = (int) $_GET['cat_id'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["email"])) {
@@ -30,22 +29,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($email && $pickup_date && $pickup_time) {
-        // Query to get the user id from the email
         $check_email = mysqli_query($connections, "SELECT id FROM accounts WHERE email='$email'");
         $user = mysqli_fetch_assoc($check_email);
 
         if ($user) {
             $user_id = $user['id'];
-
-            // Insert the adoption request into the adoption_requests table
             $query = mysqli_query($connections, "INSERT INTO adoption_requests (user_id, cat_id, pickup_date, pickup_time)
             VALUES ('$user_id', '$cat_id', '$pickup_date', '$pickup_time')");
 
             if ($query) {
                 echo "<script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        var myModal = new bootstrap.Modal(document.getElementById('successModal'));
-                        myModal.show();
+                        document.getElementById('successModal').classList.remove('hidden');
                     });
                   </script>";
             } else {
@@ -61,98 +56,84 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>The Cat Cottage Adoption Form</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: url('path/to/your/background.jpg') no-repeat center center fixed;
-            background-size: cover;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
+  <meta charset="UTF-8">
+  <title>The Cat Cottage Adoption Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { poppins: ['Poppins', 'sans-serif'] },
+          colors: {
+            olivegreen: '#A4B465',
+            lightcream: '#f5ecd5',
+            adoptbtn: '#a3b77f',
+            adoptbtnhover: '#8eaa7a',
+          },
         }
-
-        .blur-card {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 2rem;
-            width: 40%;
-            margin: 40px auto;
-        }
-
-        .centered-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .form-control {
-            border-radius: 10px;
-        }
-
-        .error-msg {
-            color: red;
-            font-size: 0.875rem;
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-image: url('../images/background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  </style>
 </head>
-<body>
-<?php include("nav.php"); ?>
-<br>
+<body class="font-poppins bg-olivegreen min-h-screen">
+  <?php include("nav.php"); ?>
 
-<div class="centered-container">
-    <div class="blur-card shadow-lg">
-	<h3 class="mb-4 text-center">Input Pick Up Details</h3>
-        <form method="POST" action="" enctype="multipart/form-data">
-            <input type="hidden" name="cat_id" value="<?= htmlspecialchars($cat_id) ?>">
+  <div class="flex items-center justify-center min-h-screen px-4 py-12">
+    <div class="bg-lightcream bg-opacity-80 backdrop-blur-md p-8 rounded-3xl shadow-xl w-full max-w-md">
+      <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Input Pick-Up Details</h2>
 
-            <div class="mb-3">
-                <input type="email" class="form-control" name="email" placeholder="Your Email" value="<?= htmlspecialchars($email) ?>" required>
-                <div class="error-msg"><?= $emailErr ?></div>
-            </div>
-            <div class="mb-3">
-                <input type="date" class="form-control" name="pickup_date" placeholder="Pickup Date" value="<?= htmlspecialchars($pickup_date) ?>" required>
-                <div class="error-msg"><?= $pickup_dateErr ?></div>
-            </div>
-            <div class="mb-3">
-                <input type="time" class="form-control" name="pickup_time" placeholder="Pickup Time" value="<?= htmlspecialchars($pickup_time) ?>" required>
-                <div class="error-msg"><?= $pickup_timeErr ?></div>
-            </div>
+      <form method="POST" action="">
+        <input type="hidden" name="cat_id" value="<?= htmlspecialchars($cat_id) ?>">
 
-            <button type="submit" class="btn btn-primary w-100">Submit Adoption Request</button>
-        </form>
-    </div>
-</div>
+        <div class="mb-4">
+          <input type="email" name="email" placeholder="Your Email" value="<?= htmlspecialchars($email) ?>"
+                 class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-olivegreen"
+                 required>
+          <p class="text-sm text-red-600 mt-1"><?= $emailErr ?></p>
+        </div>
 
-<!-- Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center">
-      <div class="modal-header border-0">
-        <h5 class="modal-title w-100" id="successModalLabel">Submission Successful</h5>
-      </div>
-      <div class="modal-body">
-        We have successfully received your adoption request! Regularly check your notifications for updates!
-      </div>
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-success" onclick="redirectToHome()" data-bs-dismiss="modal">OK</button>
-      </div>
+        <div class="mb-4">
+          <input type="date" name="pickup_date" value="<?= htmlspecialchars($pickup_date) ?>"
+                 class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-olivegreen"
+                 required>
+          <p class="text-sm text-red-600 mt-1"><?= $pickup_dateErr ?></p>
+        </div>
+
+        <div class="mb-6">
+          <input type="time" name="pickup_time" value="<?= htmlspecialchars($pickup_time) ?>"
+                 class="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-olivegreen"
+                 required>
+          <p class="text-sm text-red-600 mt-1"><?= $pickup_timeErr ?></p>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-adoptbtn hover:bg-adoptbtnhover text-white py-2 rounded-xl font-semibold transition duration-300">
+          Submit Adoption Request
+        </button>
+      </form>
     </div>
   </div>
-</div>
 
-<script>
-    function redirectToHome() {
-        window.location.href = 'adopt.php';
-    }
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+  <!-- Success Modal -->
+  <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
+      <h2 class="text-xl font-semibold mb-3">Submission Successful</h2>
+      <p class="text-gray-700 mb-5">We have successfully received your adoption request! Check your notifications for updates.</p>
+      <button onclick="window.location.href='adopt.php'"
+              class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full transition">
+        OK
+      </button>
+    </div>
+  </div>
 </body>
 </html>

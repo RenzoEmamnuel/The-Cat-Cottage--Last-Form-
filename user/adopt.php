@@ -1,160 +1,116 @@
-<?php include("nav.php"); ?>
 <?php include("connections.php"); ?>
 
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Cat Adoption</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: url('path/to/your/background.jpg') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-            font-family: 'Nunito', sans-serif;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Cat Cottage</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+   <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { poppins: ['Poppins', 'sans-serif'] },
+          colors: {
+            olivegreen: '#A4B465',
+            lightcream: '#f5ecd5',
+            adoptbtn: '#a3b77f',
+            adoptbtnhover: '#8eaa7a',
+          },
         }
-
-        .centered-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 40px 0;
-        }
-
-        .blur-card {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 2rem;
-            width: 80%;            /* wider to fit 4-per-row */
-            margin: 0 auto;
-        }
-
-        .grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .card {
-            background-color: #f1f0d1;
-            width: calc(25% - 20px);
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        .card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .info {
-            font-size: 14px;
-            margin: 10px 0;
-            text-align: left;
-        }
-
-        .btn {
-            background-color: #a6c191;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            background-color: #8eaa7a;
-        }
-
-        @media (max-width: 1200px) {
-            .card { width: calc(33.33% - 20px); }
-        }
-        @media (max-width: 768px) {
-            .card { width: calc(50% - 20px); }
-        }
-        @media (max-width: 480px) {
-            .card { width: 100%; }
-            .blur-card { width: 95%; }
-			
-			
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    .glass-bg {
+      background-color: rgba(245, 236, 213, 0.85);
+      backdrop-filter: blur(10px);
+    }
+  </style>
 </head>
-<script>
-function checkAdoptionRequest(catId) {
-    fetch('check_request.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'cat_id=' + catId
-    })
-    .then(response => response.text())
-    .then(result => {
-        if (result.trim() === 'exists') {
-            alert("You have already requested to adopt this cat.");
-        } else {
-            window.location.href = 'adoption_form.php?cat_id=' + catId;
+
+
+<body class="font-poppins bg-olivegreen min-h-screen">
+  <?php include("nav.php"); ?>
+
+  <!-- Title Image -->
+<header class="flex justify-center pt-6 px-4">
+  <img src="../images/title.png" alt="The Cat Cottage Title" class="w-48 md:w-56 lg:w-64" loading="lazy">
+</header>
+
+  <!-- Decorative Design Top -->
+  <div class="flex justify-center mt-[-4px] mb-10 px-4">
+  <img src="../images/design1.png" alt="Decorative Flower Design" class="w-72 md:w-80 lg:w-96" loading="lazy">
+  </div>
+
+  <!-- Main Content -->
+  <main class="pb-16 px-6 md:px-10 lg:px-20 -mt-6">
+  <section class="glass-bg p-8 md:p-10 rounded-3xl shadow-lg">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <?php
+        $query = mysqli_query($connections, "SELECT * FROM cats WHERE status='Available'");
+        while ($row = mysqli_fetch_assoc($query)) {
+          $id = intval($row['id']);
+          $fields = ['image', 'name', 'breed', 'age', 'sex', 'neutered', 'vaccination', 'description'];
+          foreach ($fields as $f) $$f = htmlspecialchars($row[$f]);
+
+          echo "
+          <div class='bg-lightcream rounded-xl overflow-hidden shadow-md flex flex-col items-center cat-container cursor-pointer' onclick='showModal(\"{$id}\")'>
+            <img src='{$image}' alt='Cat Image' class='w-40 h-40 object-cover mt-4' loading='lazy'>
+            <div class='p-4 text-gray-800 text-center'>
+              <p class='font-semibold text-lg'>{$name}</p>
+              <button class='mt-4 bg-adoptbtn hover:bg-adoptbtnhover text-white font-semibold py-2 px-6 rounded-full transition duration-300' onclick='event.stopPropagation(); window.location.href=\"adoption_form.php?cat_id={$id}\"'>ADOPT</button>
+            </div>
+          </div>
+
+          <!-- Modal for Cat {$id} -->
+          <div id='modal-{$id}' class='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden'>
+            <div class='rounded-2xl p-6 max-w-md w-full shadow-xl relative' style='background-color: #f5ecd5;'>
+              <button onclick='closeModal(\"{$id}\")' class='absolute top-2 right-3 text-xl font-bold text-gray-600 hover:text-black'>&times;</button>
+              <img src='{$image}' alt='Cat Image' class='w-40 h-40 object-cover mx-auto mb-4 rounded'>
+              <h2 class='text-center font-bold text-xl mb-2'>{$name}</h2>
+              <ul class='text-sm text-gray-700 space-y-1'>
+                <li><strong>Breed:</strong> {$breed}</li>
+                <li><strong>Age:</strong> {$age}</li>
+                <li><strong>Sex:</strong> {$sex}</li>
+                <li><strong>Neutered:</strong> {$neutered}</li>
+                <li><strong>Vaccination:</strong> {$vaccination}</li>
+                <li><strong>Description:</strong> {$description}</li>
+              </ul>
+              <div class='text-center mt-4'>
+                <button onclick='window.location.href=\"adoption_form.php?cat_id={$id}\"' class='bg-adoptbtn hover:bg-adoptbtnhover text-white font-semibold py-2 px-6 rounded-full transition duration-300'>ADOPT</button>
+              </div>
+            </div>
+          </div>";
         }
-    });
-}
-</script>
+        ?>
+      </div>
+    </section>
+  </main>
 
-
-<body>
-
-<div class="centered-container">
-    <div class="blur-card shadow-lg">
-        <h2 class="text-center mb-4">Available Cats for Adoption</h2>
-        <div class="grid">
-            <?php
-            $query = mysqli_query($connections, "SELECT * FROM cats WHERE status='Available'");
-            while ($row = mysqli_fetch_assoc($query)) {
-                $image       = htmlspecialchars($row['image']);
-                $name        = htmlspecialchars($row['name']);
-                $breed       = htmlspecialchars($row['breed']);
-                $age         = htmlspecialchars($row['age']);
-                $sex         = htmlspecialchars($row['sex']);
-                $neutered    = htmlspecialchars($row['neutered']);
-                $vaccination = htmlspecialchars($row['vaccination']);
-                $description = htmlspecialchars($row['description']);
-                $id          = intval($row['id']);
-
-                echo "
-                <div class='card'>
-                    <img src='../{$image}' alt='Cat Image'>
-                    <div class='info'>
-					<center>
-                        <strong>Name:</strong> {$name}<br>
-                        <strong>Breed:</strong> {$breed}<br>
-                        <strong>Age:</strong> {$age}<br>
-                        <strong>Sex:</strong> {$sex}<br>
-                        <strong>Neutered:</strong> {$neutered}<br>
-                        <strong>Vaccination:</strong> {$vaccination}<br>
-                        <strong>Description:</strong> {$description}
-						</center>
-                    </div>
-                    <button class='btn' onclick='window.location.href=\"adoption_form.php?cat_id={$id}\"'>ADOPT</button>
-                </div>
-                ";
-            }
-            ?>
-        </div>
-    </div>
+<!-- Decorative Design Bottom -->
+<div class="flex justify-center -mt-8 mb-10 px-4">
+  <img src="../images/design1.png" alt="Decorative Flower Design Bottom" class="w-72 md:w-80 lg:w-96" loading="lazy">
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Modal JS -->
+  <script>
+    function showModal(id) {
+      document.getElementById('modal-' + id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.add('hidden');
+    }
+  </script>
 </body>
+
 </html>

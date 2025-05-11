@@ -1,53 +1,64 @@
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-    .navbar {
-        position: sticky;
-        top: 30px;
-        margin: 30px auto 0 auto; 
-        width: 65%;
-        background: #F5ECD5;
-        padding: 5px;
-        border-radius: 20px;
-        text-align: center;
-        z-index: 1000;
-    }
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-    .navbar a, .navbar .btn {
-        text-decoration: none;
-        color: #333;
-        font-size: 14px;
-        font-weight: bold;
-        margin: 0 15px;
-        padding: 10px;
-        border-radius: 20px;
-        transition: 0.3s;
-        display: inline-block;
-        background: transparent;
-        border: none;
-    }
+<!-- Responsive Navbar -->
+<nav class="sticky top-2 z-50 w-full px-5">
+  <!-- Wrapper for background only visible on desktop -->
+  <div class="relative">
+    <!-- Hamburger button absolutely placed at top-right -->
+    <button id="menu-toggle" class="md:hidden absolute top-2 right-4 text-gray-800 z-50">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
 
-    .navbar a:hover, .navbar .dropdown-menu a:hover {
-        background: #A4B465;
-        color: white;
-		border: none;
-    }
+    <!-- Desktop navbar container -->
+    <div class="hidden md:flex items-center justify-between mx-auto w-2/3 bg-[#F5ECD5] px-5 py-2 rounded-3xl shadow-lg">
+      <div class="flex justify-center gap-x-4 text-sm font-semibold text-gray-800 w-full">
+        <a href="index.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">Home</a>
+        <a href="adopt.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">Adopt</a>
+        <a href="submit.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">Submit a Cat</a>
+        <a href="aboutus.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition">About Us</a>
+        <a href="notifs.php" class="hover:bg-[#A4B465] hover:text-white px-3 py-2 rounded-full transition flex items-center justify-center" title="Notifications">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+               xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0h6z">
+            </path>
+          </svg>
+        </a>
+        <a href="../login.php" class="bg-[#A4B465] text-white hover:bg-[#8FA856] px-4 py-2 rounded-full transition">Log Out (User)</a>
+      </div>
+    </div>
+  </div>
 
-    .dropdown-menu {
-        border-radius: 20px;
-    }
-</style>
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobile-menu"
+       class="md:hidden mt-2 hidden flex-col gap-y-2 text-sm font-semibold text-gray-800 text-center absolute right-4 top-12 w-56 px-4 py-2 shadow-lg rounded-3xl bg-[#F5ECD5]">
+    <a href="index.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition block">Home</a>
+    <a href="adopt.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition block">Adopt</a>
+    <a href="submit.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition block">Submit a Cat</a>
+    <a href="aboutus.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition block">About Us</a>
+    <a href="notifs.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition block flex items-center justify-center">
+      <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+           xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0h6z">
+        </path>
+      </svg>
+    </a>
+    <a href="../login.php" class="hover:bg-[#A4B465] hover:text-white px-4 py-2 rounded-full transition block">Log Out (User)</a>
+  </div>
+</nav>
 
+<!-- Toggle Script -->
+<script>
+  const toggleBtn = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
 
-
-
-<div class="navbar">
-    <a href="index.php">Home</a> &nbsp; 
-	<a href="adopt.php">Adopt</a> &nbsp; 
-	<a href="submit.php">Submit a Cat</a> &nbsp; 
-	<a href="notifs.php">Notifications</a> &nbsp; 
-	<a href="aboutus.php">About Us</a>  &nbsp; 
-	<a href="../login.php">Log Out (User)</a>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+  toggleBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+</script>

@@ -1,5 +1,6 @@
 <?php include("connections.php"); ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,72 +8,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cat Adoption</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            poppins: ['Poppins', 'sans-serif']
-          },
+          fontFamily: { poppins: ['Poppins', 'sans-serif'] },
           colors: {
-            darkgreen: '#626F47',
             olivegreen: '#A4B465',
-            cream: '#f1f0d1',
-            adoptbtn: '#a6c191',
+            lightcream: '#f5ecd5',
+            adoptbtn: '#a3b77f',
             adoptbtnhover: '#8eaa7a',
-          }
+          },
         }
       }
     }
   </script>
+  <style>
+    .glass-bg {
+      background-color: rgba(245, 236, 213, 0.85);
+      backdrop-filter: blur(10px);
+    }
+  </style>
 </head>
 
-<body class="font-poppins bg-darkgreen min-h-screen">
-  <?php include("nav.php"); ?>
+<body class="font-poppins bg-olivegreen min-h-screen">
+  
 
-  <main class="pt-32 pb-16 px-6 md:px-10 lg:px-20">
-    <section class="bg-olivegreen p-10 md:p-12 rounded-3xl shadow-2xl">
-      <h2 class="text-3xl font-semibold text-white text-center mb-10">Available Cats for Adoption</h2>
+  <!-- Title Image -->
+<header class="flex justify-center pt-6 px-4">
+  <img src="images/title.png" alt="The Cat Cottage Title" class="w-48 md:w-56 lg:w-64" loading="lazy">
+</header>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+
+  <!-- Decorative Design Top -->
+  <div class="flex justify-center mt-[-4px] mb-10 px-4">
+  <img src="images/design1.png" alt="Decorative Flower Design" class="w-72 md:w-80 lg:w-96" loading="lazy">
+  </div>
+
+  <!-- Main Content -->
+  <main class="pb-16 px-6 md:px-10 lg:px-20 -mt-6">
+  <section class="glass-bg p-8 md:p-10 rounded-3xl shadow-lg">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         <?php
         $query = mysqli_query($connections, "SELECT * FROM cats WHERE status='Available'");
         while ($row = mysqli_fetch_assoc($query)) {
-            $image       = htmlspecialchars($row['image']);
-            $name        = htmlspecialchars($row['name']);
-            $breed       = htmlspecialchars($row['breed']);
-            $age         = htmlspecialchars($row['age']);
-            $sex         = htmlspecialchars($row['sex']);
-            $neutered    = htmlspecialchars($row['neutered']);
-            $vaccination = htmlspecialchars($row['vaccination']);
-            $description = htmlspecialchars($row['description']);
-            $id          = intval($row['id']);
+          $id = intval($row['id']);
+          $fields = ['image', 'name', 'breed', 'age', 'sex', 'neutered', 'vaccination', 'description'];
+          foreach ($fields as $f) $$f = htmlspecialchars($row[$f]);
 
-            echo "
-            <div class='bg-cream rounded-xl overflow-hidden shadow-md flex flex-col'>
-              <img src='{$image}' alt='Cat Image' class='w-full h-52 object-cover'>
+          echo "
+          <div class='bg-lightcream rounded-xl overflow-hidden shadow-md flex flex-col items-center cat-container cursor-pointer' onclick='showModal(\"{$id}\")'>
+            <img src='{$image}' alt='Cat Image' class='w-40 h-40 object-cover mt-4' loading='lazy'>
+            <div class='p-4 text-gray-800 text-center'>
+              <p class='font-semibold text-lg'>{$name}</p>
+              <button class='mt-4 bg-adoptbtn hover:bg-adoptbtnhover text-white font-semibold py-2 px-6 rounded-full transition duration-300' onclick='event.stopPropagation(); window.location.href=\"login.php?cat_id={$id}\"'>ADOPT</button>
+            </div>
+          </div>
 
-              <div class='p-4 text-gray-800 flex-1 flex flex-col justify-between'>
-                <div class='text-sm space-y-1 text-center'>
-                  <p><strong>Name:</strong> {$name}</p>
-                  <p><strong>Breed:</strong> {$breed}</p>
-                  <p><strong>Age:</strong> {$age}</p>
-                  <p><strong>Sex:</strong> {$sex}</p>
-                  <p><strong>Neutered:</strong> {$neutered}</p>
-                  <p><strong>Vaccination:</strong> {$vaccination}</p>
-                  <p><strong>Description:</strong> {$description}</p>
-                </div>
-                <div class='mt-4 text-center'>
-                  <button class='bg-adoptbtn hover:bg-adoptbtnhover text-white font-semibold py-2 px-6 rounded-full transition-all duration-300' onclick='window.location.href=\"login.php?cat_id={$id}\"'>ADOPT</button>
-                </div>
+          <!-- Modal for Cat {$id} -->
+          <div id='modal-{$id}' class='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden'>
+            <div class='rounded-2xl p-6 max-w-md w-full shadow-xl relative' style='background-color: #f5ecd5;'>
+              <button onclick='closeModal(\"{$id}\")' class='absolute top-2 right-3 text-xl font-bold text-gray-600 hover:text-black'>&times;</button>
+              <img src='{$image}' alt='Cat Image' class='w-40 h-40 object-cover mx-auto mb-4 rounded'>
+              <h2 class='text-center font-bold text-xl mb-2'>{$name}</h2>
+              <ul class='text-sm text-gray-700 space-y-1'>
+                <li><strong>Breed:</strong> {$breed}</li>
+                <li><strong>Age:</strong> {$age}</li>
+                <li><strong>Sex:</strong> {$sex}</li>
+                <li><strong>Neutered:</strong> {$neutered}</li>
+                <li><strong>Vaccination:</strong> {$vaccination}</li>
+                <li><strong>Description:</strong> {$description}</li>
+              </ul>
+              <div class='text-center mt-4'>
+                <button onclick='window.location.href=\"login.php?cat_id={$id}\"' class='bg-adoptbtn hover:bg-adoptbtnhover text-white font-semibold py-2 px-6 rounded-full transition duration-300'>ADOPT</button>
               </div>
             </div>
-            ";
+          </div>";
         }
         ?>
       </div>
     </section>
   </main>
+
+<!-- Decorative Design Bottom -->
+<div class="flex justify-center -mt-8 mb-10 px-4">
+  <img src="images/design1.png" alt="Decorative Flower Design Bottom" class="w-72 md:w-80 lg:w-96" loading="lazy">
+</div>
+
+  <!-- Modal JS -->
+  <script>
+    function showModal(id) {
+      document.getElementById('modal-' + id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.add('hidden');
+    }
+  </script>
 </body>
 </html>
