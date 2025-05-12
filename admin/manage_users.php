@@ -1,4 +1,4 @@
-<?php include("nav.php"); ?>
+
 <?php include("connections.php"); ?>
 <?php
 if (isset($_POST['confirm_delete'])) {
@@ -39,6 +39,7 @@ if (isset($_POST['confirm_delete'])) {
   </style>
 </head>
 <body class="font-poppins bg-olivegreen min-h-screen p-4">
+  <?php include("nav.php"); ?>
 
 <div class="max-w-6xl mx-auto bg-lightcream bg-opacity-90 backdrop-blur-md p-6 rounded-3xl shadow-lg mt-8">
   <h2 class="text-2xl font-semibold text-center mb-6">Manage Accounts</h2>

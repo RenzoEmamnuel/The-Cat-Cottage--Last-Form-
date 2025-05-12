@@ -90,21 +90,7 @@ $emailErr = $nameErr = $breedErr = $ageErr = $sexErr = $neuteredErr = $vaccinati
     </div>
   </div>
 
-  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content text-center">
-        <div class="modal-header border-0">
-          <h5 class="modal-title w-100" id="successModalLabel">Submission Successful</h5>
-        </div>
-        <div class="modal-body">
-          Welcome to The Cat Cottage!
-        </div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-success" onclick="redirectToHome()" data-bs-dismiss="modal">OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
+ 
 
   <script>
     function redirectToHome() {

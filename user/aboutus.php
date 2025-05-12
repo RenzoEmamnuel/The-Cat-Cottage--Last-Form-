@@ -37,7 +37,7 @@
       <div class="flex flex-col lg:flex-row gap-6 items-start">
         <!-- Logo -->
         <div class="w-full lg:w-1/3 flex justify-center lg:justify-center">
-          <img src="images/logo.png" alt="Logo" class="w-48 lg:w-60 h-auto"/>
+          <img src="../images/logo.png" alt="Logo" class="w-48 lg:w-60 h-auto"/>
         </div>
 
         <!-- Text Content -->

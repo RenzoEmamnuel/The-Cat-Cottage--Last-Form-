@@ -1,6 +1,39 @@
-<?php include("nav.php"); ?>
+
 <?php include("connections.php"); ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Accounts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { poppins: ['Poppins', 'sans-serif'] },
+          colors: {
+            olivegreen: '#A4B465',
+            lightcream: '#f5ecd5',
+            tablehead: '#f0bb77',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-image: url('../images/background.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  </style>
+</head>
+<body class="font-poppins bg-olivegreen min-h-screen p-4">
+  <?php include("nav.php"); ?>
 <?php
 if (isset($_POST['confirm_approve'])) {
     $approve_id = $_POST['approve_id'];
@@ -12,115 +45,137 @@ if (isset($_POST['confirm_reject'])) {
     mysqli_query($connections, "UPDATE submitted_cats SET status='Rejected' WHERE id='$reject_id'");
 }
 ?>
-<div class="container mt-4">
-    <h3 class="text-center">Adoption History</h3>
-    <table class='table table-bordered mt-3'>
-        <thead>
-            <tr>
-                <th>Time Submitted</th>
-                <th>Requester's Email</th>
-                <th>Cat's Name</th>
-                <th>Pick Up Date</th>
-                <th>Pick Up Time</th>
-                
-                <th>Cat Image</th>
-				<th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            // Updated query to fetch adoption request details, email from accounts, and cat name/image from cats table
-            $query = "
-                SELECT ar.timestamp, ar.pickup_date, ar.pickup_time, ar.status,
-                       acc.email AS requester_email,
-                       c.name AS cat_name, c.image AS cat_image
-                FROM adoption_requests ar
-                JOIN accounts acc ON ar.user_id = acc.id
-                JOIN cats c ON ar.cat_id = c.id
-                WHERE ar.status = 'Approved' OR ar.status = 'Rejected'
-            ";
-            
-            $view_query = mysqli_query($connections, $query);
 
-            while ($row = mysqli_fetch_assoc($view_query)) {
-                $timestamp = $row["timestamp"];
-                $email = $row["requester_email"];
-                $cat_name = $row["cat_name"];
-                $pickup_date = $row["pickup_date"];
-                $pickup_time = $row["pickup_time"];
-                $status = $row["status"];
-                $cat_image = $row["cat_image"];
+<style>
+    body {
+        background-color: #fdf6e3;
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+        color: #4a5c28;
+    }
 
-                echo "
+    h3 {
+        color: #4a5c28;
+        margin-top: 30px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    table {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    thead th {
+        background-color: #f0bb77;
+        color: #4a5c28;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .btn-success, .btn-danger {
+        min-width: 110px;
+    }
+
+    .container {
+        margin-bottom: 50px;
+    }
+</style>
+<!-- Outer container to push both sections downward -->
+<div class="mt-12"> <!-- Adjust mt-12 to control how far down -->
+
+    <!-- Adoption History Section -->
+    <div class="bg-lightcream rounded-xl shadow-xl px-6 pb-6 overflow-x-auto">
+        <h3 class="text-2xl font-semibold text-center text-black mb-4 mt-0 pt-4">Adoption History</h3>
+        <table class="min-w-full text-sm text-center border border-gray-300 text-black">
+            <thead class="bg-tablehead text-black">
                 <tr>
-                    <td>$timestamp</td>
-                    <td>$email</td>
-                    <td>$cat_name</td>
-                    <td>$pickup_date</td>
-                    <td>$pickup_time</td>
-                    
-                    <td><img src='../$cat_image' alt='Cat Image' style='width: 100px; height: auto;'></td>
-					<td>$status</td>
-                </tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
-<div class="container mt-4">
-    <h3 class="text-center">Submission History</h3>
-    <table class='table table-bordered mt-3'>
-        <thead>
-            <tr>
-                <th>Time Submitted</th>
-                <th>Email</th>
-                <th>Cat's Name</th>
-                <th>Breed</th>
-                <th>Age</th>
-                <th>Sex</th>
-                <th>Neutered?</th>
-                <th>Vaccination History</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $view_query = mysqli_query($connections, "SELECT * FROM submitted_cats WHERE status = 'Approved' OR status = 'Rejected'");
-            while ($row = mysqli_fetch_assoc($view_query)) {
-                $user_id = $row["id"];
-                $db_email = $row["email"];
-                $db_name = $row["name"];
-                $db_breed = $row["breed"];
-                $db_age = $row["age"];
-                $db_sex = $row["sex"];
-                $db_neutered = $row["neutered"];
-                $db_vaccination = $row["vaccination"];
-                $db_description = $row["description"];
-                $db_image = $row["image"];
-                $db_status = $row["status"];
-                $db_timestamp = $row["timestamp"];
-                echo "
-                <tr>
-                    <td>$db_timestamp</td>
-                    <td>$db_email</td>
-                    <td>$db_name</td>
-                    <td>$db_breed</td>
-                    <td>$db_age</td>
-                    <td>$db_sex</td>
-                    <td>$db_neutered</td>
-                    <td>$db_vaccination</td>
-                    <td>$db_description</td>
-                    <td><img src='../$db_image' alt='Cat Image' style='width: 100px; height: auto;'></td>
-                    <td>$db_status</td>
-                </tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
+                    <th class="px-4 py-2">Time Submitted</th>
+                    <th class="px-4 py-2">Requester's Email</th>
+                    <th class="px-4 py-2">Cat's Name</th>
+                    <th class="px-4 py-2">Pick Up Date</th>
+                    <th class="px-4 py-2">Pick Up Time</th>
+                    <th class="px-4 py-2">Cat Image</th>
+                    <th class="px-4 py-2">Status</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white text-black">
+                <?php
+                $query = "
+                    SELECT ar.timestamp, ar.pickup_date, ar.pickup_time, ar.status,
+                           acc.email AS requester_email,
+                           c.name AS cat_name, c.image AS cat_image
+                    FROM adoption_requests ar
+                    JOIN accounts acc ON ar.user_id = acc.id
+                    JOIN cats c ON ar.cat_id = c.id
+                    WHERE ar.status = 'Approved' OR ar.status = 'Rejected'
+                ";
+                $view_query = mysqli_query($connections, $query);
+                while ($row = mysqli_fetch_assoc($view_query)) {
+                    echo "<tr class='border-t'>
+                            <td class='px-4 py-2'>{$row["timestamp"]}</td>
+                            <td class='px-4 py-2'>{$row["requester_email"]}</td>
+                            <td class='px-4 py-2'>{$row["cat_name"]}</td>
+                            <td class='px-4 py-2'>{$row["pickup_date"]}</td>
+                            <td class='px-4 py-2'>{$row["pickup_time"]}</td>
+                            <td class='px-4 py-2'><img src='../{$row["cat_image"]}' class='w-20 h-auto mx-auto rounded'></td>
+                            <td class='px-4 py-2'>{$row["status"]}</td>
+                          </tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
 
+    <!-- Submission History Section -->
+    <div class="bg-lightcream rounded-xl shadow-xl px-6 pb-6 overflow-x-auto mt-6">
+        <h3 class="text-2xl font-semibold text-center text-black mb-4 mt-0 pt-4">Submission History</h3>
+        <table class="min-w-full text-sm text-center border border-gray-300 text-black">
+            <thead class="bg-tablehead text-black">
+                <tr>
+                    <th class="px-4 py-2">Time Submitted</th>
+                    <th class="px-4 py-2">Email</th>
+                    <th class="px-4 py-2">Cat's Name</th>
+                    <th class="px-4 py-2">Breed</th>
+                    <th class="px-4 py-2">Age</th>
+                    <th class="px-4 py-2">Sex</th>
+                    <th class="px-4 py-2">Neutered?</th>
+                    <th class="px-4 py-2">Vaccination</th>
+                    <th class="px-4 py-2">Description</th>
+                    <th class="px-4 py-2">Image</th>
+                    <th class="px-4 py-2">Status</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white text-black">
+                <?php
+                $view_query = mysqli_query($connections, "SELECT * FROM submitted_cats WHERE status = 'Approved' OR status = 'Rejected'");
+                while ($row = mysqli_fetch_assoc($view_query)) {
+                    echo "<tr class='border-t'>
+                            <td class='px-4 py-2'>{$row["timestamp"]}</td>
+                            <td class='px-4 py-2'>{$row["email"]}</td>
+                            <td class='px-4 py-2'>{$row["name"]}</td>
+                            <td class='px-4 py-2'>{$row["breed"]}</td>
+                            <td class='px-4 py-2'>{$row["age"]}</td>
+                            <td class='px-4 py-2'>{$row["sex"]}</td>
+                            <td class='px-4 py-2'>{$row["neutered"]}</td>
+                            <td class='px-4 py-2'>{$row["vaccination"]}</td>
+                            <td class='px-4 py-2'>{$row["description"]}</td>
+                            <td class='px-4 py-2'><img src='../{$row["image"]}' class='w-20 h-auto mx-auto rounded'></td>
+                            <td class='px-4 py-2'>{$row["status"]}</td>
+                          </tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+
+</div>
 
 
 
@@ -171,7 +226,6 @@ if (isset($_POST['confirm_reject'])) {
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Script to pass ID to modals -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var approveModal = document.getElementById('confirmApproveModal');
@@ -190,3 +244,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+</body>
